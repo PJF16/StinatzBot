@@ -25,7 +25,7 @@ api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 #Search Twitter for tweets with this keyword
 #Put multiple keywords with 'OR' in between
 #Example: search = '#keywordToSearch OR #keywordToSearch2'
-search = '#keywordToSearch'
+search = 'stinatz'
 
 #Maximum limit of tweets to be interacted with
 maxNumberOfTweets = 500
@@ -39,21 +39,23 @@ for tweet in tweepy.Cursor(api.search, search).items(maxNumberOfTweets):
     try:
         print(colored('Found tweet by @' + tweet.user.screen_name, 'cyan'))
 
-        #Publishing retweet
-        tweet.retweet()
+        if tweet.user.screen_name != "StinatzBot":
+            #Publishing retweet
+            tweet.retweet()
 
-        #Updating count for each successfull retweet
-        count = count + 1
-        print(colored('Retweet #' + str(count) + ' published successfully.', 'green'))
-
-        #Random wait time
-        timeToWait = random.randint(95, 115)
-        print("Waiting for "+ str(timeToWait) + " seconds")
-        for remaining in range(timeToWait, -1, -1):
-            sys.stdout.write("\r")
-            sys.stdout.write("{:2d} seconds remaining.".format(remaining))
-            sys.stdout.flush()
-            time.sleep(1)
+            #Updating count for each successfull retweet
+            count = count + 1
+            print(colored('Retweet #' + str(count) + ' published successfully.', 'green'))
+            #Random wait time
+            timeToWait = random.randint(95, 115)
+            print("Waiting for "+ str(timeToWait) + " seconds")
+            for remaining in range(timeToWait, -1, -1):
+                sys.stdout.write("\r")
+                sys.stdout.write("{:2d} seconds remaining.".format(remaining))
+                sys.stdout.flush()
+                time.sleep(1)
+        else:
+            print("Tweet of myself. No retweet.")
         sys.stdout.write("\rOnwards to next tweet!\n")
 
     except tweepy.TweepError as e:
